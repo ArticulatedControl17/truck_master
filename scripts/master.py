@@ -10,10 +10,10 @@ class TruckMaster:
         self.manual = True
         self.pub = rospy.Publisher('truck_cmd', AckermannDrive, queue_size=10)
 
-        rospy.init_node('truckmaster', anonymous=False)
+        rospy.init_node('master', anonymous=False)
         rospy.Subscriber('aut_ackermann_control', AckermannDrive, self.autAckermannHandler)
         rospy.Subscriber('man_ackermann_control', AckermannDrive, self.manualAckermannHandler)
-        rospy.Subscriber('manual_control', Bool, self.manualHandler)
+        rospy.Subscriber('manual_control', Bool, self.manualOrAutomaticHandler)
         rospy.Subscriber('dead_mans_grip', Bool, self.goHandler)
 
     def autAckermannHandler(self,data):
@@ -38,6 +38,6 @@ class TruckMaster:
 if __name__ == '__main__':
     try:
         tm = TruckMaster()
-        tm.spin()
+        rospy.spin()
     except rospy.ROSInterruptException:
         pass
