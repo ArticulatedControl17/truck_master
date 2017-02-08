@@ -1,0 +1,4 @@
+<launch>
+  <node name="api" pkg="hw_api_ackermann" type="truck_cmd_node" />
+  <node name="master" pkg="truck_master" type="master">
+</launch>
