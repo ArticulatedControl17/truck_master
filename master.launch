@@ -1,4 +1,7 @@
 <launch>
   <node name="truck_cmd_node" pkg="hw_api_ackermann" type="truck_cmd_node.py" />
   <node name="master" pkg="truck_master" type="master.py" />
+  <node name="pid" pkg="pid_ctrl_pkg" type="pid.py"/>
+  <node name="joy_node" pkg="joy" type="joy_node" />
+  <node name="converter" pkg="joy_to_ackermann" type="converter.py" args="_autorepeat_rate:=50 _coalesce_rate=0.02"/>
 </launch>

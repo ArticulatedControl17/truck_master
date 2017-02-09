@@ -21,7 +21,10 @@ class TruckMaster:
             self.pub.publish(data)
 
     def manualAckermannHandler(self,data):
+        print "manual", self.manual
+        print "go", self.go
         if self.manual and self.go:
+            print "publishing data", data
             self.pub.publish(data)
 
     def manualOrAutomaticHandler(self,data):
