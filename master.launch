@@ -1,11 +1,11 @@
-<!-- pass argument like: roslaunch truck_master master.launch rate:=50.0  -->
+<!-- pass argument like: roslaunch truck_master master.launch gamepad_rate:=50.0  -->
 
 <launch>
 
-  <arg name="rate" default="50.0" />
-  <arg name="joystick_type" default="ps3"/>
+  <arg name="gamepad_rate" default="50.0" />
+  <arg name="gamepad_type" default="ps3"/>
 
-  <node name="truck_cmd_node" pkg="hw_api_ackermann" type="truck_cmd_node.py" />
+  <node name="cmd_node" pkg="truck_hw_api" type="cmd_node.py" />
 
   <node name="master" pkg="truck_master" type="master.py" />
 
@@ -16,8 +16,8 @@
     <param name="coalesce_rate" type="double" value="$(eval 1.0 / arg('rate'))" />
   </node>
 
-  <node name="converter" pkg="joy_to_ackermann" type="converter.py">
-    <param name="joy_rate" type="double" value="$(arg rate)" />
-    <param name="joystick_type" type="string" value="$(arg joystick_type)" />
+  <node name="gamepad" pkg="truck_manual_ctrl" type="gamepad.py">
+    <param name="gamepad_rate" type="double" value="$(arg gamepad_rate)" />
+    <param name="gamepad_type" type="string" value="$(arg gamepad_type)" />
   </node>
 </launch>
