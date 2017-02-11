@@ -38,6 +38,7 @@ class TruckMaster:
             self.pub.publish(ack)
     
     def spin(self):
+        #if no dms message received in a while, then stop truck (if bluetooth disconnects etc)
         while not rospy.is_shutdown():
             if rospy.get_time() - self.last_dms_msg > 0.3 && (self.last_dms_msg != -1):
                 ack = AckermannDrive()
