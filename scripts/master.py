@@ -9,6 +9,8 @@ class TruckMaster:
         self.auto_ctrl = False
         self.pub = rospy.Publisher('master_drive', AckermannDrive, queue_size=10)
 
+        self.last_dms_msg = -1
+
         rospy.init_node('master', anonymous=False)
         rospy.Subscriber('auto_drive', AckermannDrive, self.autAckermannHandler)
         rospy.Subscriber('man_drive', AckermannDrive, self.manualAckermannHandler)
@@ -28,12 +30,23 @@ class TruckMaster:
 
     def deadMansSwitchHandler(self,data):
         self.dead_mans_switch = data.data
+        self.last_dms_msg = rospy.get_time()
         if not self.dead_mans_switch:
             ack = AckermannDrive()
             ack.steering_angle = 0
             ack.speed = 0
             self.pub.publish(ack)
+    
+    def spin(self):
+        while not rospy.is_shutdown():
+            if rospy.get_time() - self.last_dms_msg > 0.3 && (self.last_dms_msg != -1):
+                ack = AckermannDrive()
+                ack.steering_angle = 0
+                ack.speed = 0
+                self.pub.publish(ack)
+            
+            rospy.sleep(0.1)
 
 if __name__ == '__main__':
     tm = TruckMaster()
-    rospy.spin()
+    tm.spin()
