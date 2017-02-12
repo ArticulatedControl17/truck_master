@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import rospy
-from hw_api_ackermann.msg import AckermannDrive
+from ackermann_msgs.msg import AckermannDrive
 from std_msgs.msg import Bool
 
 class TruckMaster:
