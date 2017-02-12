@@ -12,10 +12,12 @@ class TruckMaster:
         self.last_dms_msg = -1
 
         rospy.init_node('master', anonymous=False)
-        rospy.Subscriber('auto_drive', AckermannDrive, self.autAckermannHandler)
+        rospy.Subscriber('auto_drive', AckermannDrive, self.autoAckermannHandler)
         rospy.Subscriber('man_drive', AckermannDrive, self.manualAckermannHandler)
         rospy.Subscriber('auto_ctrl', Bool, self.manualOrAutomaticHandler)
         rospy.Subscriber('dead_mans_switch', Bool, self.goHandler)
+
+        rospy.loginfo('Init done, publishes to %s', self.pub)
 
     def autoDriveHandler(self,data):
         if self.auto_ctrl and self.dead_mans_switch:
@@ -27,6 +29,7 @@ class TruckMaster:
 
     def autoCtrlHandler(self,data):
         self.auto_ctrl = data.data
+        rospy.loginfo("Switched control to %s", "auto" if self.auto_ctrl else "manual")
 
     def deadMansSwitchHandler(self,data):
         self.dead_mans_switch = data.data
@@ -40,7 +43,7 @@ class TruckMaster:
     def spin(self):
         #if no dms message received in a while, then stop truck (if bluetooth disconnects etc)
         while not rospy.is_shutdown():
-            if rospy.get_time() - self.last_dms_msg > 0.3 && (self.last_dms_msg != -1):
+            if rospy.get_time() - self.last_dms_msg > 0.3 and (self.last_dms_msg != -1):
                 ack = AckermannDrive()
                 ack.steering_angle = 0
                 ack.speed = 0
