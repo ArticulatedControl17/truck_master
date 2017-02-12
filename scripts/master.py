@@ -5,19 +5,21 @@ from std_msgs.msg import Bool
 
 class TruckMaster:
     def __init__(self):
+        PUBLISH_TOPIC = 'master_drive'
+
         self.dead_mans_switch = False
         self.auto_ctrl = False
-        self.pub = rospy.Publisher('master_drive', AckermannDrive, queue_size=10)
+        self.pub = rospy.Publisher(PUBLISH_TOPIC, AckermannDrive, queue_size=10)
 
         self.last_dms_msg = -1
 
         rospy.init_node('master', anonymous=False)
-        rospy.Subscriber('auto_drive', AckermannDrive, self.autoAckermannHandler)
-        rospy.Subscriber('man_drive', AckermannDrive, self.manualAckermannHandler)
-        rospy.Subscriber('auto_ctrl', Bool, self.manualOrAutomaticHandler)
-        rospy.Subscriber('dead_mans_switch', Bool, self.goHandler)
+        rospy.Subscriber('auto_drive', AckermannDrive, self.autoDriveHandler)
+        rospy.Subscriber('man_drive', AckermannDrive, self.manualDriveHandler)
+        rospy.Subscriber('auto_ctrl', Bool, self.autoCtrlHandler)
+        rospy.Subscriber('dead_mans_switch', Bool, self.deadMansSwitchHandler)
 
-        rospy.loginfo('Init done, publishes to %s', self.pub)
+        rospy.loginfo('Init done, publishes to /%s', PUBLISH_TOPIC)
 
     def autoDriveHandler(self,data):
         if self.auto_ctrl and self.dead_mans_switch:
