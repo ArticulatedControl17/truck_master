@@ -7,7 +7,6 @@ PUBLISH_TOPIC = 'master_drive'
 
 class TruckMaster:
     def __init__(self):
-
         self.dead_mans_switch = False
         self.auto_ctrl = False
         self.pub = rospy.Publisher(PUBLISH_TOPIC, AckermannDrive, queue_size=10)

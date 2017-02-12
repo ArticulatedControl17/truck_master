@@ -9,7 +9,7 @@
 
   <node name="master" pkg="truck_master" type="master.py" />
 
-  <node name="pid" pkg="pid_ctrl_pkg" type="pid.py"/>
+  <node name="pid" pkg="truck_automatic_ctrl" type="pid.py"/>
 
   <node name="joy_node" pkg="joy" type="joy_node">
     <param name="autorepeat_rate" type="double" value="$(arg rate)" />
