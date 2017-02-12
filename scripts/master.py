@@ -3,9 +3,10 @@ import rospy
 from ackermann_msgs.msg import AckermannDrive
 from std_msgs.msg import Bool
 
+PUBLISH_TOPIC = 'master_drive'
+
 class TruckMaster:
     def __init__(self):
-        PUBLISH_TOPIC = 'master_drive'
 
         self.dead_mans_switch = False
         self.auto_ctrl = False
