@@ -46,6 +46,7 @@ class TruckMaster:
         #if no dms message received in a while, then stop truck (if bluetooth disconnects etc)
         while not rospy.is_shutdown():
             if rospy.get_time() - self.last_dms_msg > 0.3 and (self.last_dms_msg != -1):
+                print "no message in 0.3 sec, stopping truck"
                 ack = AckermannDrive()
                 ack.steering_angle = 0
                 ack.speed = 0

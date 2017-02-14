@@ -2,8 +2,13 @@
 
 <launch>
 
+  
   <arg name="gamepad_rate" default="50.0" />
   <arg name="gamepad_type" default="ps3"/>
+
+  <node name= "error_Calculation" pkg= "gulliviewServer" type="rosErrorCalc.py"/>
+
+  <node name= "gulliview" pkg= "gulliviewServer" type="gulliview"/>
 
   <node name="cmd_node" pkg="truck_hw_api" type="cmd_node.py" />
 
@@ -12,8 +17,8 @@
   <node name="pid" pkg="truck_automatic_ctrl" type="pid.py"/>
 
   <node name="joy_node" pkg="joy" type="joy_node">
-    <param name="autorepeat_rate" type="double" value="$(arg rate)" />
-    <param name="coalesce_rate" type="double" value="$(eval 1.0 / arg('rate'))" />
+    <param name="autorepeat_rate" type="double" value="$(arg gamepad_rate)" />
+    <param name="coalesce_rate" type="double" value="$(eval 1.0 / arg('gamepad_rate'))" />
   </node>
 
   <node name="gamepad" pkg="truck_manual_ctrl" type="gamepad.py">
