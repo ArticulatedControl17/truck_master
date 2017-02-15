@@ -31,26 +31,17 @@ class TruckMaster:
 
     def autoCtrlHandler(self,data):
         self.auto_ctrl = data.data
-        rospy.loginfo("Switched control to %s", "auto" if self.auto_ctrl else "manual")
 
     def deadMansSwitchHandler(self,data):
         self.dead_mans_switch = data.data
         self.last_dms_msg = rospy.get_time()
-        if not self.dead_mans_switch:
-            ack = AckermannDrive()
-            ack.steering_angle = 0
-            ack.speed = 0
-            self.pub.publish(ack)
     
     def spin(self):
         #if no dms message received in a while, then stop truck (if bluetooth disconnects etc)
         while not rospy.is_shutdown():
             if rospy.get_time() - self.last_dms_msg > 0.3 and (self.last_dms_msg != -1):
-                print "no message in 0.3 sec, stopping truck"
-                ack = AckermannDrive()
-                ack.steering_angle = 0
-                ack.speed = 0
-                self.pub.publish(ack)
+                print "master: no message in 0.3 sec, stopping truck"
+                self.dead_mans_switch = False
             
             rospy.sleep(0.1)
 
