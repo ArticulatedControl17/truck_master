@@ -1,21 +1,42 @@
 <!-- pass argument like: roslaunch truck_master master.launch gamepad_rate:=50.0  -->
 
 <launch>
-
+  <arg name="error_calc" default="true"/>
+  <arg name="pid" default="true"/>
+  <arg name="hw_api" default="true"/>
   <arg name="gamepad" default="true"/>
   <arg name="gamepad_rate" default="50.0" />
-  <arg name="gamepad_type" default="ps3"/>
+  <arg name="gamepad_type" default="xbox"/>
   
-  <node name= "error_Calculation" pkg= "gulliviewServer" type="rosErrorCalc.py"/>
+  <arg name="kp" default="2.0" />
+  <arg name="ki" default="0.0" />
+  <arg name="kd" default="0.0" />
+  <arg name="speed" default="0.46"/>
+  
+  <group if="$(arg error_calc)">
+	 <node name= "error_calc_node" pkg= "gulliview_server" type="error_calc_node.py"/>
+  </group>
+  
+  <node name= "gulliview" pkg= "gulliview_server" type="gulliview"/>
 
-  <node name= "gulliview" pkg= "gulliviewServer" type="gulliview"/>
 
-  <node name="cmd_node" pkg="truck_hw_api" type="cmd_node.py" />
 
+  <group if="$(arg hw_api)">
+     <node name="cmd_node" pkg="truck_hw_api" type="cmd_node.py" />
+  </group>
+  
   <node name="master" pkg="truck_master" type="master.py" />
 
-  <node name="pid" pkg="truck_automatic_ctrl" type="pid.py"/>
-
+  
+  <group if="$(arg pid)">
+     <node name="pid" pkg="truck_automatic_ctrl" type="pid_node.py">
+        <param name="kp" type="double" value="$(arg kp)" />
+        <param name="ki" type="double" value="$(arg ki)" />
+        <param name="kd" type="double" value="$(arg kd)" />
+        <param name="speed" type="double" value="$(arg speed)" />
+     </node>
+  </group>
+  
   <group if="$(arg gamepad)">
     <node name="joy_node" pkg="joy" type="joy_node" >
       <param name="autorepeat_rate" type="double" value="$(arg gamepad_rate)" />
