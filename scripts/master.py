@@ -1,46 +1,50 @@
 #!/usr/bin/env python
-# license removed for brevity
 import rospy
-from hw_api_ackermann.msg import AckermannDrive
+from ackermann_msgs.msg import AckermannDrive
 from std_msgs.msg import Bool
+
+PUBLISH_TOPIC = 'master_drive'
 
 class TruckMaster:
     def __init__(self):
-        self.go = False
-        self.manual = True
-        self.pub = rospy.Publisher('truck_cmd', AckermannDrive, queue_size=10)
+        self.dead_mans_switch = False
+        self.auto_ctrl = False
+        self.pub = rospy.Publisher(PUBLISH_TOPIC, AckermannDrive, queue_size=10)
+
+        self.last_dms_msg = -1
 
         rospy.init_node('master', anonymous=False)
-        rospy.Subscriber('aut_ackermann_control', AckermannDrive, self.autAckermannHandler)
-        rospy.Subscriber('man_ackermann_control', AckermannDrive, self.manualAckermannHandler)
-        rospy.Subscriber('manual_control', Bool, self.manualOrAutomaticHandler)
-        rospy.Subscriber('dead_mans_grip', Bool, self.goHandler)
+        rospy.Subscriber('auto_drive', AckermannDrive, self.autoDriveHandler)
+        rospy.Subscriber('man_drive', AckermannDrive, self.manualDriveHandler)
+        rospy.Subscriber('auto_ctrl', Bool, self.autoCtrlHandler)
+        rospy.Subscriber('dead_mans_switch', Bool, self.deadMansSwitchHandler)
 
-    def autAckermannHandler(self,data):
-        if not self.manual and self.go:
+        rospy.loginfo('Init done, publishes to /%s', PUBLISH_TOPIC)
+
+    def autoDriveHandler(self,data):
+        if self.auto_ctrl and self.dead_mans_switch:
             self.pub.publish(data)
 
-    def manualAckermannHandler(self,data):
-        print "manual", self.manual
-        print "go", self.go
-        if self.manual and self.go:
-            print "publishing data", data
+    def manualDriveHandler(self,data):
+        if (not self.auto_ctrl) and self.dead_mans_switch:
             self.pub.publish(data)
 
-    def manualOrAutomaticHandler(self,data):
-        self.manual = data.data
+    def autoCtrlHandler(self,data):
+        self.auto_ctrl = data.data
 
-    def goHandler(self,data):
-        self.go = data.data
-        if not self.go:
-            ack = AckermannDrive()
-            ack.steering_angle = 0
-            ack.speed = 0
-            self.pub.publish(ack)
+    def deadMansSwitchHandler(self,data):
+        self.dead_mans_switch = data.data
+        self.last_dms_msg = rospy.get_time()
+    
+    def spin(self):
+        #if no dms message received in a while, then stop truck (if bluetooth disconnects etc)
+        while not rospy.is_shutdown():
+            if rospy.get_time() - self.last_dms_msg > 0.3 and (self.last_dms_msg != -1):
+                print "master: no message in 0.3 sec, stopping truck"
+                self.dead_mans_switch = False
+            
+            rospy.sleep(0.1)
 
 if __name__ == '__main__':
-    try:
-        tm = TruckMaster()
-        rospy.spin()
-    except rospy.ROSInterruptException:
-        pass
+    tm = TruckMaster()
+    tm.spin()
