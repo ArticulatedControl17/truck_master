@@ -89,10 +89,10 @@ rosrun package_name node.py
 cd /path/to/scripts
 python node.py
 ```
-## 5. Troubleshooting: ## 
-    * If the PI turns off randomly while driving, it means there's an issue with the power. Either the batteries have ran out, or the batteries aren't strong enough to power both the     motor and the pi.
-         - Charge batteries
-         - Use a powerbank for the PI to solve this problem.
+## 5. Troubleshooting:  
+   *  If the PI turns off randomly while driving, it means there's an issue with the power. Either the batteries have ran out, or the batteries aren't strong enough to power both the     motor and the pi.
+       - Charge batteries
+       - Use a powerbank for the PI to solve this problem.
              - Turn off battery, plugin powerbank, boot PI (dont forget HDMI), wait a few moments, then turn on the battery again.
    * What is the password?
       - Ask in Slack
