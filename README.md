@@ -2,8 +2,7 @@
 For regulating commands to the hardware API, choosing between manual and automatic
 
 # How to run the truck #
-
-## 0. You will need: ## 
+## 0. You will need: ##
    * The truck
    * a box to place it on, elevating the back wheels, so it doesn't drive off when starting
    * Hdmi cable
@@ -28,13 +27,13 @@ For regulating commands to the hardware API, choosing between manual and automat
 
 ssh 192.168.5.31 -X -l bachelor
 ```
- (Password is six characters, similar to the vnet passwprd)
+ (Password is six characters, similar to the vnet password)
     
 ```
 #!python
 
 cd repository/visionlocalization_old/build
-    ./script.sh
+./script.sh
 ```
 
     
@@ -43,27 +42,26 @@ cd repository/visionlocalization_old/build
    * Plugin the xbox controller.
       - If you wanna use the ps3 controller, try this: [http://askubuntu.com/questions/409761/how-do-i-use-a-ps3-sixaxis-controller-with-ubuntu-to-control-games](Link URL)
    * Run 
-       
 ```
 #!python
 
 export ROS_HOSTNAME=YOUR_IP
 export ROS_MASTER_URI=http://TRUCK_IP:11311
 ```
-with correct IP addresses. (check ip with ifconfig)
-   (You need to do this in every new terminal window)
-   * IMPORTANT: Before running the next command, make sure the back wheels are elevated so that it doesn't drive off
-   * Run 
+* with correct IP addresses. (check ip with ifconfig) (You need to export this in every new terminal window)
+* IMPORTANT: Before running the next command, make sure the back wheels are elevated so that it doesn't drive off.
+* Run 
+
 ```
 #!python
 
 roslaunch truck_master master.launch hw_api:=0
 ```
  (this launches all nodes except the hardware API)
-   - If you are using the ps3 controller, you need to add gamepad_type:="ps3" to the launch command
+      - If you are using the ps3 controller, you need to add gamepad_type:="ps3" to the launch command
    
 ## 4. How to drive: ##
-   - [Untitled.png](https://bitbucket.org/repo/nqxL85/images/3204438201-Untitled.png)
+   - [Controls.png](https://bitbucket.org/repo/nqxL85/images/3204438201-Untitled.png)
    - The Dead Man's Switch needs to be pressed for the truck to move. (Applies to both manual and automatic driving)
    - The select button changes the behavior of the gas pedal (nothing else), if it is used for reversing or driving forwards.
 
@@ -75,7 +73,7 @@ roslaunch truck_master master.launch hw_api:=0
 rosnode kill *nodename*
 ```
 
-    - Change what you want to change in the source-code and start it again:
+* Change what you want to change in the source-code and start it again:
 
 ```
 #!python
@@ -83,7 +81,7 @@ rosnode kill *nodename*
 rosrun package_name node.py
 ```
  
-    Or run the python file directly.
+* Or run the python file directly.
 
 ```
 #!python
@@ -91,22 +89,20 @@ rosrun package_name node.py
 cd /path/to/scripts
 python node.py
 ```
-
-   
-## 5. Troubleshooting: ##   
-   - If the PI turns off randomly while driving, it means there's an issue with the power.
-        - either the batteries have ran out, or the batteries aren't strong enough to power both the motor
-        and the pi.
-        - Use a powerbank for the pi to solve this problem.
-            - turn off battery, plugin powerbank, boot PI (dont forget hdmi), wait a few moments, then turn on battery again.
-   - What is the password?
-      - ask in slack
-   - nothing happens when pressing the controller?
-       - this might be a variety of issues, echo rostopics to see where the issue is.
-       - rostopic echo joy
-       - rostopic echo man_drive
-       - rostopic echo dead_mans_switch
-       - rostopic echo master_drive
+## 5. Troubleshooting: ## 
+    * If the PI turns off randomly while driving, it means there's an issue with the power. Either the batteries have ran out, or the batteries aren't strong enough to power both the     motor and the pi.
+         - Charge batteries
+         - Use a powerbank for the PI to solve this problem.
+             - Turn off battery, plugin powerbank, boot PI (dont forget HDMI), wait a few moments, then turn on the battery again.
+   * What is the password?
+      - Ask in Slack
+   * Nothing happens when pressing the controller?
+       - This might be a variety of issues, 
+       - echo rostopics to see where the issue is.
+           - rostopic echo joy
+           - rostopic echo man_drive
+           - rostopic echo dead_mans_switch
+           - rostopic echo master_drive
        - double check "export ROS_***" commands above
        - Check if the controller you are truing to use are really /dev/input/js0. If it isn't (it might be js1 for example), 
          then you need to start the joy_node with the argument "dev:="/dev/input/js1""
@@ -114,6 +110,6 @@ python node.py
              <param name="dev" type="string" value="/dev/input/js1" />
             in the node-tag for the joy_node in master.launch
    - no data is being published on "error"
-      -make sure there is a visible tag ;)
+      - make sure there is a visible tag ;)
    - I get a broken pipe error
       - start the roscore and hw_api from the truck instead of through ssh
