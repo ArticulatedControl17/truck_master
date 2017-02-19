@@ -9,7 +9,7 @@ For regulating commands to the hardware API, choosing between manual and automat
    * Charged batteries
    * You may need to use a powerbank to power the pi while driving.
    * Xbox or PS3 controller
-   * Laptop with ros and all the latest versions of truck_manual_control, truck_master, truck_automatic_control and gulliview_server.
+   * Laptop with ROS and all the latest versions of truck_manual_control, truck_master, truck_automatic_control and gulliview_server.
    * You may need to install the ackermann_msgs package: 
       - To do so clone this repository [https://github.com/ros-drivers/ackermann_msgs](Link URL) into the src folder of you catkin workspace and run catkin_make again
    * You may need to install the joy package. Refer to this tutorial to setup joy: [http://wiki.ros.org/joy/Tutorials/ConfiguringALinuxJoystick](Link URL)
