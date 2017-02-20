@@ -11,7 +11,7 @@ For regulating commands to the hardware API, choosing between manual and automat
    * Xbox or PS3 controller
    * Laptop with ROS and all the latest versions of truck_manual_control, truck_master, truck_automatic_control and gulliview_server.
    * You may need to install the ackermann_msgs package: 
-      - To do so clone this repository [https://github.com/ros-drivers/ackermann_msgs](Link URL) into the src folder of you catkin workspace and run catkin_make again
+      - To do so clone this repository [https://github.com/ros-drivers/ackermann_msgs](https://github.com/ros-drivers/ackermann_msgs) into the src folder of you catkin workspace and run catkin_make again
    * You may need to install the joy package. Refer to this tutorial to setup joy: [http://wiki.ros.org/joy/Tutorials/ConfiguringALinuxJoystick](http://wiki.ros.org/joy/Tutorials/ConfiguringALinuxJoystick)
    * To have given Thomas the MAC-address on your computer (not sure if this is actually needed?)
    * Connect to vnet on the truck and the laptop
@@ -40,7 +40,7 @@ cd repository/visionlocalization_old/build
    
 ## 3. The laptop ##
    * Plugin the xbox controller.
-      - If you wanna use the ps3 controller, try this: [http://askubuntu.com/questions/409761/how-do-i-use-a-ps3-sixaxis-controller-with-ubuntu-to-control-games](Link URL)
+      - If you wanna use the ps3 controller, try this: [http://askubuntu.com/questions/409761/how-do-i-use-a-ps3-sixaxis-controller-with-ubuntu-to-control-games](http://askubuntu.com/questions/409761/how-do-i-use-a-ps3-sixaxis-controller-with-ubuntu-to-control-games)
    * Run 
 ```
 #!python
