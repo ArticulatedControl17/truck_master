@@ -2,7 +2,7 @@
 For regulating commands to the hardware API, choosing between manual and automatic
 
 
-Script for creating catkin ws and downloading repos: [https://drive.google.com/open?id=0BxRJZY1j9wVVMDBwVDBBRG12cTA](Link URL)
+Script for creating catkin ws and downloading repos: https://drive.google.com/open?id=0BxRJZY1j9wVVMDBwVDBBRG12cTA
 
 # How to run the truck #
 ## 0. You will need: ##
