@@ -1,6 +1,9 @@
 ## What is this repository for? ##
 For regulating commands to the hardware API, choosing between manual and automatic
 
+
+Script for creating catkin ws and downloading repos: [https://drive.google.com/open?id=0BxRJZY1j9wVVMDBwVDBBRG12cTA](Link URL)
+
 # How to run the truck #
 ## 0. You will need: ##
    * The truck
