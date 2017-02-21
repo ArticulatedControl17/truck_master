@@ -109,17 +109,22 @@ For regulating commands to the hardware API, choosing between manual and automat
     - Ask in Slack
 * Nothing happens when pressing the controller?
     - This might be a variety of issues, 
-    - echo rostopics to see where the issue is.
-        - rostopic echo joy
-        - rostopic echo man_drive
-        - rostopic echo dead_mans_switch
-        - rostopic echo master_drive
-    - double check "export ROS_***" commands above
-    - Check if the controller you are truing to use are really /dev/input/js0. If it isn't (it might be js1 for example), then you need to start the joy_node with the argument "dev:="/dev/input/js1""
-        - To do so add this line:
-             <param name="dev" type="string" value="/dev/input/js1" />
-            in the node-tag for the joy_node in master.launch
-    - no data is being published on "error"
+    - Echo rostopics to see where the issue is.
+        `rostopic echo joy`
+        `rostopic echo man_drive`
+        `rostopic echo dead_mans_switch`
+        `rostopic echo master_drive`
+    - Double check `export ROS_***` commands above
+    - Check what the controller you are trying to use is called.
+        * Unplug controller 
+        * `ls /dev/input`
+        * Plug in the controller
+        * `ls /dev/input`
+        * If the controller is not recognized as "js0", but as something else, for example "js1", you need to start master.launch with the argument `gamepad_input:="/dev/input/js1"`
+
+            Like so: `roslaunch truck_master master.launch gamepad_input:="/dev/input/js1"`
+
+    - No data is being published on "error"
         - make sure there is a visible tag ;)
     - I get a broken pipe error
-        - start the roscore and hw_api from the truck instead of through ssh
+        - start the roscore and hardware API from the truck instead of through ssh
