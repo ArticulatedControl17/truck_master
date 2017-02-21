@@ -110,19 +110,24 @@ For regulating commands to the hardware API, choosing between manual and automat
 * Nothing happens when pressing the controller?
     - This might be a variety of issues, 
     - Echo rostopics to see where the issue is.
+
         `rostopic echo joy`
+
         `rostopic echo man_drive`
+
         `rostopic echo dead_mans_switch`
+
         `rostopic echo master_drive`
+
     - Double check `export ROS_***` commands above
     - Check what the controller you are trying to use is called.
         * Unplug controller 
         * `ls /dev/input`
         * Plug in the controller
         * `ls /dev/input`
-        * If the controller is not recognized as "js0", but as something else, for example "js1", you need to start master.launch with the argument `gamepad_input:="/dev/input/js1"`
+        * If the controller is not recognized as "js0", but as something else, for example "js1", you need to start master.launch like this:
 
-            Like so: `roslaunch truck_master master.launch gamepad_input:="/dev/input/js1"`
+            `roslaunch truck_master master.launch gamepad_input:="/dev/input/js1"`
 
     - No data is being published on "error"
         - make sure there is a visible tag ;)
