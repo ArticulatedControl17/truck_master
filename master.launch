@@ -3,7 +3,7 @@
 <launch>
   <arg name="error_calc" default="true"/>
   <arg name="pid" default="true"/>
-  <arg name="hw_api" default="true"/>
+  <arg name="hw_api" default="false"/>
   <arg name="gamepad" default="true"/>
   <arg name="gamepad_rate" default="50.0" />
   <arg name="gamepad_type" default="xbox"/>
