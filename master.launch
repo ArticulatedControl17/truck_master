@@ -15,7 +15,7 @@
   </group>
   
   <group if="$(arg gulliview)">
-     node name= "gulliview" pkg= "gulliview_server" type="gulliview"/>
+     <node name= "gulliview" pkg= "gulliview_server" type="gulliview"/>
   </group>
 
 
