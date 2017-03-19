@@ -1,17 +1,26 @@
 <!-- pass argument like: roslaunch truck_master master.launch gamepad_rate:=50.0  -->
 
 <launch>
-  <arg name="error_calc" default="true"/>
-  <arg name="pid" default="true"/>
+  <arg name="path_planning" default="false"/>
+  <arg name="auto_master" default="true"/>
+  <arg name="trailer" default="true"/>
   <arg name="hw_api" default="false"/>
   <arg name="gamepad" default="true"/>
   <arg name="gamepad_rate" default="50.0" />
-  <arg name="gamepad_type" default="xbox"/>
+  <arg name="gamepad_type" default="ps3"/>
   <arg name="gamepad_input" default="/dev/input/js0"/>
   <arg name="gulliview" default="true"/>
   
-  <group if="$(arg error_calc)">
-	 <node name= "error_calc_node" pkg= "gulliview_server" type="error_calc_node.py"/>
+  
+  <group if="$(arg path_planning)">
+	 <node name= "path_planning" pkg= "path_planning" type="path_planning_node.py"/>
+  </group>
+  
+  
+  <group if="$(arg auto_master)">
+	 <node name= "auto_master" pkg= "truck_automatic_ctrl" type="auto_master.py">
+     <param name="trailer" type="boolean" value="$(arg trailer)"/>
+     </node>
   </group>
   
   <group if="$(arg gulliview)">
@@ -26,9 +35,6 @@
   <node name="master" pkg="truck_master" type="master.py" />
 
   
-  <group if="$(arg pid)">
-     <node name="pid" pkg="truck_automatic_ctrl" type="pid_node.py"/>
-  </group>
   
   <group if="$(arg gamepad)">
     <node name="joy_node" pkg="joy" type="joy_node" >
