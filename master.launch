@@ -1,10 +1,15 @@
 <!-- pass argument like: roslaunch truck_master master.launch gamepad_rate:=50.0  -->
 
 <launch>
-  <arg name="path_planning" default="false"/>
+  <arg name="rviz" default="true"/>
+  <arg name="sim" default="false"/>
+  <arg name="sim_node" default="true"/>
+  <arg name "map_update" default="true" />
+  <arg name="path_planning" default="true"/>
   <arg name="auto_master" default="true"/>
-  <arg name="trailer" default="true"/>
+  
   <arg name="hw_api" default="false"/>
+  
   <arg name="gamepad" default="true"/>
   <arg name="gamepad_rate" default="50.0" />
   <arg name="gamepad_type" default="ps3"/>
@@ -12,41 +17,60 @@
   <arg name="gulliview" default="true"/>
   
   
-  <group if="$(arg path_planning)">
-	 <node name= "path_planning" pkg= "path_planning" type="path_planning_node.py"/>
+  <group if="$(arg sim)">
+    
+    <node if="$(arg sim_node)" name= "sim" pkg= "truck_automatic_ctrl" type="sim.py"/>
+    
+    
+  </group>
+  
+  </group unless="$(arg sim)">
+      
+      <node if="$(arg gulliview)" name= "gulliview" pkg= "gulliview_server" type="gulliview"/>
+      
+      <group if="$(arg hw_api)">
+         <node name="cmd_node" pkg="truck_hw_api" type="cmd_node.py" />
+         <node name="trailersensor" pkg="truck_hw_api" type="trailersensor.py"/>
+      </group>
+      
+      
+      <node name="master" pkg="truck_master" type="master.py" />
+      
+      
+      
+      <group if="$(arg gamepad)">
+        <node name="joy_node" pkg="joy" type="joy_node" >
+          <param name="autorepeat_rate" type="double" value="$(arg gamepad_rate)" />
+          <param name="coalesce_rate" type="double" value="$(eval 1.0 / arg('gamepad_rate'))" />
+          <param name="dev" type="string" value="$(arg gamepad_input)"/>
+        </node>
+
+        <node name="gamepad" pkg="truck_manual_ctrl" type="gamepad.py">
+          <param name="rate" type="double" value="$(arg gamepad_rate)" />
+          <param name="type" type="string" value="$(arg gamepad_type)" />
+        </node>
+      
+       </group>
+
+  
   </group>
   
   
-  <group if="$(arg auto_master)">
-	 <node name= "auto_master" pkg= "truck_automatic_ctrl" type="auto_master.py">
+  <group if="$(arg rviz)" >
+        <node name= "visualization" pkg= "truck_visualization" type="visualization.py"/>
+        <node name="rviz" pkg="rviz" type="rviz"/>
+  </group>
+  
+  
+  <node if="$(arg path_planning)" name="path_planning" pkg= "path_planning" type="path_planning_node.py"/>
+  
+  <node if="$(arg auto_master)" name= "auto_master" pkg= "truck_automatic_ctrl" type="auto_master.py">
      <param name="trailer" type="boolean" value="$(arg trailer)"/>
-     </node>
-  </group>
+  </node>
   
-  <group if="$(arg gulliview)">
-     <node name= "gulliview" pkg= "gulliview_server" type="gulliview"/>
-  </group>
-
-
-  <group if="$(arg hw_api)">
-     <node name="cmd_node" pkg="truck_hw_api" type="cmd_node.py" />
-  </group>
-  
-  <node name="master" pkg="truck_master" type="master.py" />
-
+ <!-- <node if="$(arg map_update)" name="mapupdate" pkg="path_planning" type="mapupdate.py" output="screen" launch-prefix="gnome-terminal --command"/> -->
   
   
-  <group if="$(arg gamepad)">
-    <node name="joy_node" pkg="joy" type="joy_node" >
-      <param name="autorepeat_rate" type="double" value="$(arg gamepad_rate)" />
-      <param name="coalesce_rate" type="double" value="$(eval 1.0 / arg('gamepad_rate'))" />
-      <param name="dev" type="string" value="$(arg gamepad_input)"/>
-    </node>
-
-    <node name="gamepad" pkg="truck_manual_ctrl" type="gamepad.py">
-      <param name="rate" type="double" value="$(arg gamepad_rate)" />
-      <param name="type" type="string" value="$(arg gamepad_type)" />
-    </node>
   
-   </group>
+  
 </launch>
