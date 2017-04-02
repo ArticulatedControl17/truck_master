@@ -1,10 +1,9 @@
 <!-- pass argument like: roslaunch truck_master master.launch gamepad_rate:=50.0  -->
 
 <launch>
-  <arg name="rviz" default="true"/>
-  <arg name="sim" default="false"/>
-  <arg name="sim_node" default="true"/>
-  <arg name "map_update" default="true" />
+  <arg name="visual" default="true"/>
+  <arg name="sim" default="true"/>
+  <arg name="obstacles" default="true" />
   <arg name="path_planning" default="true"/>
   <arg name="auto_master" default="true"/>
   
@@ -19,12 +18,12 @@
   
   <group if="$(arg sim)">
     
-    <node if="$(arg sim_node)" name= "sim" pkg= "truck_automatic_ctrl" type="sim.py"/>
+    <node name= "sim" pkg= "truck_automatic_ctrl" type="sim.py"/>
     
     
   </group>
   
-  </group unless="$(arg sim)">
+  <group unless="$(arg sim)">
       
       <node if="$(arg gulliview)" name= "gulliview" pkg= "gulliview_server" type="gulliview"/>
       
@@ -50,25 +49,25 @@
           <param name="type" type="string" value="$(arg gamepad_type)" />
         </node>
       
-       </group>
+      </group>
 
   
   </group>
   
   
-  <group if="$(arg rviz)" >
+  <group if="$(arg visual)" >
         <node name= "visualization" pkg= "truck_visualization" type="visualization.py"/>
-        <node name="rviz" pkg="rviz" type="rviz"/>
+        <node name="rviz" pkg="rviz" type="rviz" args="-d $(find truck_visualization)/config.rviz" />
   </group>
   
   
   <node if="$(arg path_planning)" name="path_planning" pkg= "path_planning" type="path_planning_node.py"/>
   
   <node if="$(arg auto_master)" name= "auto_master" pkg= "truck_automatic_ctrl" type="auto_master.py">
-     <param name="trailer" type="boolean" value="$(arg trailer)"/>
+     <param name="sim" type="boolean" value="$(arg sim)"/>
   </node>
   
- <!-- <node if="$(arg map_update)" name="mapupdate" pkg="path_planning" type="mapupdate.py" output="screen" launch-prefix="gnome-terminal --command"/> -->
+  <node if="$(arg obstacles)" name="obstacle_node" pkg="truck_map" type="obstacle_node.py"/> 
   
   
   
