@@ -3,6 +3,7 @@
 <launch>
   <arg name="visual" default="true"/>
   <arg name="sim" default="true"/>
+  <arg name="rpi" default="false"/>
   <arg name="obstacles" default="true" />
   <arg name="path_planning" default="true"/>
   <arg name="auto_master" default="true"/>
@@ -61,7 +62,9 @@
   </group>
   
   
-  <node if="$(arg path_planning)" name="path_planning" pkg= "path_planning" type="path_planning_node.py"/>
+  <node if="$(arg path_planning)" name="path_planning" pkg= "path_planning" type="path_planning_node.py">
+     <param name="rpi" type="boolean" value="$(arg rpi)"/>
+  </node>
   
   <node if="$(arg auto_master)" name= "auto_master" pkg= "truck_automatic_ctrl" type="auto_master.py">
      <param name="sim" type="boolean" value="$(arg sim)"/>
