@@ -1,43 +1,32 @@
 ## What is this repository for? ##
-For regulating commands to the hardware API, choosing between manual and automatic
+For regulating commands to the hardware API, choosing between manual and automatic. Also a central hub for the truck project
+
+## Installation ##
+
+* Download this [script](https://drive.google.com/open?id=0BxRJZY1j9wVVQUFOTUxBc2ZZaXc), which downloads ROS, creates a new catkin workspace and clones down all the repositories you need. If you don't need to do all this, just comment out the lines you don't want to run
+
+    * Put the file where you want to create the new workspace and run it
+     
+          `cd path/to/trucker`      
+
+          `./trucker`
 
 # How to run the truck #
 
 ## 0. You will need: ##
 * The truck
-* A box to place it on, elevating the back wheels, so it doesn't drive off when starting
-* Hdmi cable
 * Charged batteries
 * A powerbank to power the pi while driving.
 * Xbox or PS3 controller
-* Laptop with ROS installed
-* All the latest versions of the repositories needed
-    * Download this [script](https://drive.google.com/open?id=0BxRJZY1j9wVVMDBwVDBBRG12cTA), which creates a new catkin workspace and clones down all the repositories you need
-
-    * Put the file where you want to create the new workspace and source it
-     
-          `cd path/to/trucker`      
-
-          `source ./trucker`
-
-* Ackermann_msgs and Joy packages installed: 
-
-    `sudo apt-get update && sudo apt-get upgrade`
-
-    `sudo apt-get install ros-kinetic-ackermann-msgs`
-
-    `sudo apt-get install ros-kinetic-joy`
-
-
+* Laptop with ROS installed and the right repos (see installation above)
 * Connect to vnet on the truck and the laptop
 * To get access to internet while connected to the vnet wifi you need to give Thomas the MAC-address for your computer. 
 This is not needed to run the truck but will make your life easier
 
 ## 1. The truck ##
-   * Turn off battery
-   * Boot the Raspberry PI with HDMI plugged in, by plugging in the powerbank. (Don't forget to turn on projector)
-   * Shortly after, turn on the batteries
-   * Wait for it to boot, open two terminal windows, run `roscore` and in the other `rosrun truck_hw_api cmd_node.py` 
+   * Boot the Pi by plugging in the powerbank
+   * Turn on the motor
+   * Wait for it to boot, run `roslaunch truck_hw_api hw_api.launch` 
         - This can be done by connecting to the truck via ssh `ssh pi@TRUCK_IP` and then running the commands above
    
 ## 2. The camera-system: ##
@@ -54,7 +43,7 @@ This is not needed to run the truck but will make your life easier
     `cd repository/visionlocalization_old/build`
 
 
-    `./script.sh`
+    `./startCameras.sh LAPTOP_IP`
 
    
 ## 3. The laptop ##
@@ -74,19 +63,22 @@ This is not needed to run the truck but will make your life easier
     with correct IP addresses. Check ip with `ifconfig`. You need to export this in every new terminal window.
 
     To avoid the hassle of always having to enter these, you can add them to your .bashrc
-    ```
-    #!bash
-    echo "export ROS_HOSTNAME=YOUR_IP" >> ~/.bashrc
-    echo "export ROS_MASTER_URI=http://TRUCK_IP:11311 >> ~/.bashrc 
-    ```
+
+    `#!bash`
+
+    `echo "export ROS_HOSTNAME=YOUR_IP" >> ~/.bashrc`
+
+    `echo "export ROS_MASTER_URI=http://TRUCK_IP:11311 >> ~/.bashrc `
+
     Then these variables will be exported each time you start a new terminal
 
 * IMPORTANT: Before running the next command, make sure the back wheels are elevated so that it doesn't drive off.
-* `roslaunch truck_master master.launch`
+* `roslaunch truck_master master.launch sim:=0`
 
-     (this launches all nodes except the hardware API)
+     (this launches all nodes except the hardware API and the simulator node)
 
      * If you are using the ps3 controller, you need to add `gamepad_type:="ps3"` to the launch command
+     * To launch with fast settings for pathplanning (if using slow computer, or running on the pi), add `rpi:=1`
    
 ## 4. How to drive: ##
 ![Controls.png](https://bitbucket.org/repo/nqxL85/images/3204438201-Untitled.png)
@@ -111,9 +103,7 @@ This is not needed to run the truck but will make your life easier
     `python node.py`
 
 ## 6. Troubleshooting:  
-*  If the PI turns off randomly while driving, it means there's an issue with the power. Either the batteries have ran out, or the batteries aren't strong enough to power both the motor and the pi.
-    * Charge batteries
-    * Use a powerbank to power the PI.
+
 * What is the password?
     - Ask in Slack
 * Nothing happens when pressing the controller?
@@ -143,6 +133,6 @@ This is not needed to run the truck but will make your life easier
     - No data is being published on "error"
         - make sure there is a visible tag ;)
     - I get a broken pipe error
-        - start the roscore and hardware API from the truck instead of through ssh
+        - start the hardware API from the truck instead of through ssh
         - run everything in screens, they do not quit when you loose the ssh session. 
         Take a look at [this link](https://www.rackaid.com/blog/linux-screen-tutorial-and-how-to/) for more information
