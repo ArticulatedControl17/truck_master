@@ -12,7 +12,7 @@
   
   <arg name="gamepad" default="true"/>
   <arg name="gamepad_rate" default="50.0" />
-  <arg name="gamepad_type" default="ps3"/>
+  <arg name="gamepad_type" default="xbox"/>
   <arg name="gamepad_input" default="/dev/input/js0"/>
   <arg name="gulliview" default="true"/>
   
