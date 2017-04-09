@@ -11,6 +11,20 @@ For regulating commands to the hardware API, choosing between manual and automat
 
           `./trucker`
 
+
+# How to run the simulator
+* `roslaunch truck_master master.launch`
+* Use the "2D Nav Goal" tool to set the goal.
+    * Watch as the pathplanning does it's thing and the truck starts to move :)
+* To set the position and direction of the truck, use the "2D Pose Estimate" tool
+* To put subgoals use the "Publish Position" tool
+* Add obstacles by focusing the window with the pyplot and press the number of the obstacle you want to add. (on the keyboard)
+    * Watch as the rviz map is updated :)
+* If the pathplanning seems to be stuck in an infinite loop you may have to kill the node (or just restart everything).
+    * `rosnode kill path_planning`
+    * Remove all obstacles
+    * `rosrun path_planning path_planning_node.py`
+
 # How to run the truck #
 
 ## 0. You will need: ##
@@ -81,6 +95,9 @@ This is not needed to run the truck but will make your life easier
      * To launch with fast settings for pathplanning (if using slow computer, or running on the pi), add `rpi:=1`
    
 ## 4. How to drive: ##
+
+* Set goals and subgoals just like in the simulator
+
 ![Controls.png](https://bitbucket.org/repo/nqxL85/images/3204438201-Untitled.png)
 
 - The Dead Man's Switch needs to be pressed for the truck to move. (Applies to both manual and automatic driving)
