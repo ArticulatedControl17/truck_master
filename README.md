@@ -7,9 +7,9 @@ For regulating commands to the hardware API, choosing between manual and automat
 
     * Put the file where you want to create the new workspace and **source** it (just running it won't work)
      
-          cd path/to/trucker     
+          cd path/to/installation     
 
-          source ./trucker
+          source ./installation.sh
 
 
 # How to run the simulator
