@@ -7,9 +7,9 @@ For regulating commands to the hardware API, choosing between manual and automat
 
     * Put the file where you want to create the new workspace and **source** it (just running it won't work)
      
-          `cd path/to/trucker`      
+          cd path/to/trucker     
 
-          `source ./trucker`
+          source ./trucker
 
 
 # How to run the simulator
@@ -98,7 +98,7 @@ This is not needed to run the truck but will make your life easier
 
 * Set goals and subgoals just like in the simulator
 
-![Controls.png](https://bitbucket.org/repo/nqxL85/images/3204438201-Untitled.png)
+![Controls](https://raw.githubusercontent.com/ArticulatedControl17/truck_master/master/xbox_controller.png)
 
 - The Dead Man's Switch needs to be pressed for the truck to move. (Applies to both manual and automatic driving)
 - The select button changes the behavior of the gas pedal (nothing else), if it is used for reversing or driving forwards.
