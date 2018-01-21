@@ -3,7 +3,7 @@ For regulating commands to the hardware API, choosing between manual and automat
 
 ## Installation ##
 
-* Download this [script](https://drive.google.com/open?id=0BxRJZY1j9wVVQUFOTUxBc2ZZaXc), which downloads ROS, creates a new catkin workspace and clones down all the repositories you need. If you don't need to do all this, just comment out the lines you don't want to run
+* Download this [script](https://github.com/ArticulatedControl17/truck_master/blob/master/installation.sh), which downloads ROS, creates a new catkin workspace and clones down all the repositories you need. If you don't need to do all this, just comment out the lines you don't want to run
 
     * Put the file where you want to create the new workspace and **source** it (just running it won't work)
      
