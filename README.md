@@ -12,7 +12,7 @@ System requirements: Ubuntu 16+
 
 ### Installation ###
 
-* Download this [script](https://github.com/ArticulatedControl17/truck_master/blob/master/installation.sh), which downloads ROS, creates a new catkin workspace and clones down all the repositories you need. If you don't need to do all this, just comment out the lines you don't want to run
+* Download this [script](https://github.com/ArticulatedControl17/truck_master/blob/master/installation.sh) (updated 2018-01-22), which downloads ROS, creates a new catkin workspace and clones down all the repositories you need. If you don't need to do all this, just comment out the lines you don't want to run
 
     * Put the file where you want to create the new workspace and **source** it (just running it won't work)
      
